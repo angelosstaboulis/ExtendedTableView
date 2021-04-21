@@ -6,7 +6,10 @@
 //
 
 import UIKit
-
+protocol TableProtocol:AnyObject{
+    func setupView()
+    func setupCell(cell:ExtendedCell,indexPath:IndexPath)->ExtendedCell
+}
 class ExtendedTableViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate {
     @IBOutlet var mainTableView: UITableView!
     var numbers:[Int]=[]
@@ -38,7 +41,7 @@ extension ExtendedTableViewController{
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return extended.getNumbers()
+        return extended.getNumbersCount()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -50,17 +53,16 @@ extension ExtendedTableViewController{
         return setupCell(cell: cell, indexPath: indexPath)
     }
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-    
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        extended.insertRow(mainTableView: tableView, indexPath: indexPath)
+        extended.removeAll(mainTableView: tableView)
     }
     
     func setupCell(cell:ExtendedCell,indexPath:IndexPath)->ExtendedCell{
         let extendedCell = cell
-        extendedCell.accessoryType = .checkmark
-        if indexPath.row < extended.getNumbers() {
+        if indexPath.row < extended.getNumbersCount() {
             extendedCell.lblDescription.text = String(extended.numbers[indexPath.row])
+            extendedCell.lblDescription.textColor = .white
         }
         return extendedCell
     }

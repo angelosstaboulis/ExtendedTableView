@@ -7,7 +7,26 @@
 
 import Foundation
 import UIKit
-class ExtendedTableView{
+protocol ExtendedTableViewProtcol:AnyObject{
+    func insertRow(mainTableView:UITableView,indexPath:IndexPath)
+    func changeRow(cell:ExtendedCell,indexPath:IndexPath,value:Int)
+    func removeRow(mainTableView:UITableView,indexPath:IndexPath)
+}
+class ExtendedTableView:ExtendedTableViewProtcol{
+    func insertRow(mainTableView: UITableView, indexPath: IndexPath)  {
+        let cell:ExtendedCell = mainTableView.cellForRow(at: indexPath) as! ExtendedCell
+        cell.backgroundColor = .orange
+        cell.accessoryType = .checkmark
+        index.removeAll()
+        for item in 0..<5{
+            index.append(IndexPath(row: indexPath.row + (item+1), section: 0))
+            numbers.insert((item+1)*100, at: indexPath.row + (item+1))
+        }
+        mainTableView.beginUpdates()
+        mainTableView.insertRows(at: index, with: .automatic)
+        mainTableView.endUpdates()
+    }
+    
     var numbers:[Int]=[]
     var index:[IndexPath] = []
     init() {
@@ -15,8 +34,18 @@ class ExtendedTableView{
             numbers.append(item)
         }
     }
-    func getNumbers()->Int{
+    func getNumbersCount()->Int{
         return numbers.count
+    }
+    func removeAll(mainTableView:UITableView){
+        index.removeAll()
+        for item in 0..<100{
+            index.append(IndexPath(row: item, section: 0))
+            numbers.removeAll()
+        }
+        mainTableView.beginUpdates()
+        mainTableView.deleteRows(at: index, with: .automatic)
+        mainTableView.endUpdates()
     }
     func changeRow(cell:ExtendedCell,indexPath:IndexPath,value:Int){
         index.removeAll()
@@ -33,17 +62,5 @@ class ExtendedTableView{
         mainTableView.deleteRows(at: index, with: .automatic)
         mainTableView.endUpdates()
     }
-    func insertRow(mainTableView:UITableView,indexPath:IndexPath){
-        let cell:ExtendedCell = mainTableView.cellForRow(at: indexPath) as! ExtendedCell
-        cell.backgroundColor = .orange
-        cell.accessoryType = .checkmark
-        index.removeAll()
-        for item in 0..<5{
-            index.append(IndexPath(row: indexPath.row + (item+1), section: 0))
-            numbers.insert(item+1, at: indexPath.row + (item+1))
-        }
-        mainTableView.beginUpdates()
-        mainTableView.insertRows(at: index, with: .automatic)
-        mainTableView.endUpdates()
-    }
+ 
 }
