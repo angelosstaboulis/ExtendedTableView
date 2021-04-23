@@ -21,7 +21,6 @@ class ExtendedCell: UITableViewCell {
         // Configure the view for the selected state
     }
     override func prepareForReuse() {
-        accessoryType = .none
-        backgroundColor = .none
+        super.prepareForReuse()
     }
 }

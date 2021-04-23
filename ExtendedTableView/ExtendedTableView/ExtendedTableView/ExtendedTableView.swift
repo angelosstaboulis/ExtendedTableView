@@ -8,29 +8,39 @@
 import Foundation
 import UIKit
 protocol ExtendedTableViewProtcol:AnyObject{
-    func insertRow(mainTableView:UITableView,indexPath:IndexPath)
+    func expandRows(mainTableView:UITableView,indexPath:IndexPath)
     func changeRow(cell:ExtendedCell,indexPath:IndexPath,value:Int)
     func removeRow(mainTableView:UITableView,indexPath:IndexPath)
 }
 class ExtendedTableView:ExtendedTableViewProtcol{
-    func insertRow(mainTableView: UITableView, indexPath: IndexPath)  {
+    func expandRows(mainTableView: UITableView, indexPath: IndexPath)  {
         let cell:ExtendedCell = mainTableView.cellForRow(at: indexPath) as! ExtendedCell
-        cell.backgroundColor = .orange
         cell.accessoryType = .checkmark
         index.removeAll()
         for item in 0..<5{
-            index.append(IndexPath(row: indexPath.row + (item+1), section: 0))
+            index.append(IndexPath(row: indexPath.row + (item+1), section:0))
             numbers.insert((item+1)*100, at: indexPath.row + (item+1))
         }
         mainTableView.beginUpdates()
         mainTableView.insertRows(at: index, with: .automatic)
         mainTableView.endUpdates()
+       
     }
-    
+    func collapseRows(mainTableView: UITableView, indexPath: IndexPath)  {
+        let cell:ExtendedCell = mainTableView.cellForRow(at: indexPath) as! ExtendedCell
+        cell.accessoryType = .checkmark
+        for item in 0..<index.count{
+            index.append(IndexPath(row: indexPath.row + (item+1), section: 0 ))
+            numbers.remove(at: indexPath.row  )
+        }
+        mainTableView.beginUpdates()
+        mainTableView.deleteRows(at: index, with: .automatic)
+        mainTableView.endUpdates()
+    }
     var numbers:[Int]=[]
     var index:[IndexPath] = []
     init() {
-        for item in 0..<100{
+        for item in 0..<5{
             numbers.append(item)
         }
     }
@@ -39,7 +49,7 @@ class ExtendedTableView:ExtendedTableViewProtcol{
     }
     func removeAll(mainTableView:UITableView){
         index.removeAll()
-        for item in 0..<100{
+        for item in 0..<5{
             index.append(IndexPath(row: item, section: 0))
             numbers.removeAll()
         }

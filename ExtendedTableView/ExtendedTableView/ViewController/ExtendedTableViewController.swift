@@ -12,8 +12,8 @@ protocol TableProtocol:AnyObject{
 }
 class ExtendedTableViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate {
     @IBOutlet var mainTableView: UITableView!
-    var numbers:[Int]=[]
     var extended:ExtendedTableView!
+    var isExpanded:Bool!=false
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -49,18 +49,29 @@ extension ExtendedTableViewController{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell:ExtendedCell = tableView.dequeueReusableCell(withIdentifier: "cell") as! ExtendedCell
+        let cell:ExtendedCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ExtendedCell
         return setupCell(cell: cell, indexPath: indexPath)
     }
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        extended.removeAll(mainTableView: tableView)
+        if isExpanded {
+            extended.collapseRows(mainTableView: tableView, indexPath: indexPath)
+            isExpanded = false
+            
+        }
+        else{
+            extended.expandRows(mainTableView: tableView, indexPath: indexPath)
+            isExpanded = true
+        }
     }
     
     func setupCell(cell:ExtendedCell,indexPath:IndexPath)->ExtendedCell{
         let extendedCell = cell
-        if indexPath.row < extended.getNumbersCount() {
+        if indexPath.row < extended.getNumbersCount() || isExpanded {
+            extendedCell.lblDescription.text = String(extended.numbers[indexPath.row])
+            extendedCell.lblDescription.textColor = .white
+        }
+        else{
             extendedCell.lblDescription.text = String(extended.numbers[indexPath.row])
             extendedCell.lblDescription.textColor = .white
         }
