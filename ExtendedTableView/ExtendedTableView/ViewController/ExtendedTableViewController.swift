@@ -71,10 +71,6 @@ extension ExtendedTableViewController{
             extendedCell.lblDescription.text = String(extended.numbers[indexPath.row])
             extendedCell.lblDescription.textColor = .white
         }
-        else{
-            extendedCell.lblDescription.text = String(extended.numbers[indexPath.row])
-            extendedCell.lblDescription.textColor = .white
-        }
         return extendedCell
     }
 }
