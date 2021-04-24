@@ -20,6 +20,7 @@ class ExtendedTableView:ExtendedTableViewProtcol{
         for item in 0..<5{
             index.append(IndexPath(row: indexPath.row + (item+1), section:0))
             numbers.insert((item+1)*100, at: indexPath.row + (item+1))
+            
         }
         mainTableView.beginUpdates()
         mainTableView.insertRows(at: index, with: .automatic)

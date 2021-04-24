@@ -67,7 +67,7 @@ extension ExtendedTableViewController{
     
     func setupCell(cell:ExtendedCell,indexPath:IndexPath)->ExtendedCell{
         let extendedCell = cell
-        if indexPath.row < extended.getNumbersCount() || isExpanded {
+        if indexPath.row < extended.getNumbersCount()  {
             extendedCell.lblDescription.text = String(extended.numbers[indexPath.row])
             extendedCell.lblDescription.textColor = .white
         }
